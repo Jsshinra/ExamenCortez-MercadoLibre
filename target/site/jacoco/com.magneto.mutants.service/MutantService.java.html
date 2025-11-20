@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MutantService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">MutantDetector</a> &gt; <a href="index.source.html" class="el_package">com.magneto.mutants.service</a> &gt; <span class="el_source">MutantService.java</span></div><h1>MutantService.java</h1><pre class="source lang-java linenums">package com.magneto.mutants.service;
+
+import com.magneto.mutants.entity.DnaRecord;
+import com.magneto.mutants.repository.DnaRecordRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.HexFormat;
+
+@Service
+public class MutantService {
+    private final MutantDetector detectorMutante;
+    private final DnaRecordRepository repositorio;
+
+<span class="fc" id="L18">    public MutantService(MutantDetector detectorMutante, DnaRecordRepository repositorio) {</span>
+<span class="fc" id="L19">        this.detectorMutante = detectorMutante;</span>
+<span class="fc" id="L20">        this.repositorio = repositorio;</span>
+<span class="fc" id="L21">    }</span>
+
+    @Transactional
+    public boolean analizarYGuardar(String[] adn) {
+<span class="fc" id="L25">        String hash = calcularHashAdn(adn);</span>
+<span class="fc" id="L26">        return repositorio.findByHashAdn(hash)</span>
+<span class="fc" id="L27">                .map(DnaRecord::esMutante)</span>
+<span class="fc" id="L28">                .orElseGet(() -&gt; {</span>
+<span class="fc" id="L29">                    boolean mutante = detectorMutante.esMutante(adn);</span>
+<span class="fc" id="L30">                    repositorio.save(new DnaRecord(hash, mutante));</span>
+<span class="fc" id="L31">                    return mutante;</span>
+                });
+    }
+
+    private String calcularHashAdn(String[] adn) {
+        try {
+<span class="fc" id="L37">            MessageDigest digest = MessageDigest.getInstance(&quot;SHA-256&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">            for (String fila : adn) {</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">                String normalizada = fila == null ? &quot;&quot; : fila.trim().toUpperCase();</span>
+<span class="fc" id="L40">                digest.update(normalizada.getBytes(StandardCharsets.UTF_8));</span>
+<span class="fc" id="L41">                digest.update((byte) '\n');</span>
+            }
+<span class="fc" id="L43">            byte[] hash = digest.digest();</span>
+<span class="fc" id="L44">            return HexFormat.of().formatHex(hash);</span>
+<span class="nc" id="L45">        } catch (NoSuchAlgorithmException e) {</span>
+<span class="nc" id="L46">            throw new IllegalStateException(&quot;SHA-256 not available&quot;, e);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

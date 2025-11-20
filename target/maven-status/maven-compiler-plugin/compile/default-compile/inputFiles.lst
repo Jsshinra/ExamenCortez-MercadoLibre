@@ -1,0 +1,14 @@
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\validation\ValidDnaSequenceValidator.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\MutantDetectorApplication.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\repository\DnaRecordRepository.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\entity\DnaRecord.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\validation\ValidDnaSequence.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\controller\MutantController.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\service\StatsService.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\service\MutantDetector.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\config\SwaggerConfig.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\controller\StatsController.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\dto\StatsResponse.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\exception\GlobalExceptionHandler.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\dto\DnaRequest.java
+C:\Users\nacho\OneDrive\Escritorio\Cortez-ExamenMercadoLibre\src\main\java\com\magneto\mutants\service\MutantService.java

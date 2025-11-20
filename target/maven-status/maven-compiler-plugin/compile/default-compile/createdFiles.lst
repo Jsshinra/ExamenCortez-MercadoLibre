@@ -1,0 +1,14 @@
+com\magneto\mutants\entity\DnaRecord.class
+com\magneto\mutants\repository\DnaRecordRepository.class
+com\magneto\mutants\dto\DnaRequest.class
+com\magneto\mutants\validation\ValidDnaSequenceValidator.class
+com\magneto\mutants\config\SwaggerConfig.class
+com\magneto\mutants\service\StatsService.class
+com\magneto\mutants\exception\GlobalExceptionHandler.class
+com\magneto\mutants\controller\MutantController.class
+com\magneto\mutants\controller\StatsController.class
+com\magneto\mutants\service\MutantDetector.class
+com\magneto\mutants\service\MutantService.class
+com\magneto\mutants\dto\StatsResponse.class
+com\magneto\mutants\MutantDetectorApplication.class
+com\magneto\mutants\validation\ValidDnaSequence.class
