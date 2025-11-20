@@ -1,63 +1,73 @@
-# Detector de Mutantes (MercadoLibre Challenge)
+# Mutant Detector (MercadoLibre Challenge)
 
-API Spring Boot para detectar secuencias de ADN mutante y guardar estadisticas en H2.
+Spring Boot API that detects mutant DNA sequences and keeps stats in H2.
 
 ## Endpoints
 
-- `POST /mutant` cuerpo de ejemplo:
+- `POST /mutant` body:
   `{ "dna": ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"] }`
-  - 200 OK si es mutante
-  - 403 Forbidden si es humano
-  - 400 Bad Request si el input no es NxN o trae caracteres distintos de `A,T,C,G`
+  - 200 OK if mutant
+  - 403 Forbidden if human
+  - 400 Bad Request on invalid input (non NxN or invalid chars)
 
-- `GET /stats` respuesta:
+- `GET /stats` response:
   `{ "count_mutant_dna": 40, "count_human_dna": 100, "ratio": 0.4 }`
-  - `ratio` = `count_mutant_dna / count_human_dna` (0 si no hay humanos)
 
-## Como ejecutar localmente
+## Run locally
 
-Requisitos: Java 17+ y Maven 3.9+.
+Prereqs: Java 17+, Maven 3.9+
 
 ```bash
 mvn spring-boot:run
-```
+O construir el JAR y ejecutar
+Empaquetar la aplicación:
 
-O bien empaqueta y corre el jar:
+Or build a jar and run:
 
-```bash
 mvn clean package
+Ejecutar el JAR:
+
+Bash
+
 java -jar target/mutants-0.0.1-SNAPSHOT.jar
 ```
 
-Consola H2: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`).
+H2 console: `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:testdb`)
 
-## Pruebas y cobertura
+## Tests and Coverage
 
 ```bash
 mvn clean verify
-```
+Reporte JaCoCo: Se genera en target/site/jacoco/index.html.
 
-Genera el reporte de JaCoCo en `target/site/jacoco/index.html`. El build falla si la cobertura es menor a 80%.
+Generates JaCoCo report at `target/site/jacoco/index.html`. Build fails if coverage < 80%.
 
-## Docker
+Docker
+Construir y ejecutar con Docker
+Construir la imagen:
 
-Construir y correr con Docker:
+Build and run with Docker:
 
-```bash
 docker build -t mutant-detector .
+Correr el contenedor:
+
+Bash
+
 docker run --rm -p 8080:8080 mutant-detector
 ```
 
-## Despliegue en Render (guia)
+## Deploy on Render (guide)
 
-Opcion A (Docker): conectar repo -> New Web Service -> Docker. El start usa el Dockerfile. Puerto 8080.
+Option A (Docker): Connect repo -> New Web Service -> Docker. Start command uses Dockerfile. Port 8080.
 
-Opcion B (Java nativo):
+Option B (Native Java):
 - Build Command: `mvn -DskipTests clean package`
 - Start Command: `java -jar target/mutants-0.0.1-SNAPSHOT.jar`
 - Runtime: Java 17
 
-## Notas
+## Notes
 
-- El DNA debe venir en matriz NxN y solo con letras `A,T,C,G`.
-- La deteccion busca en horizontal, vertical y diagonales, y corta apenas encuentra 2 secuencias mutantes.
+- Input must be NxN, only letters `A,T,C,G`.
+- Detection searches horizontal, vertical, and both diagonals; early-exits after 2 sequences.
+
+"# ExamenCortez-MercadoLibre" 
