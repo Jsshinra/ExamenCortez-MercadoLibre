@@ -3,6 +3,9 @@ package com.magneto.mutants.controller;
 import com.magneto.mutants.dto.DnaRequest;
 import com.magneto.mutants.service.MutantService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
@@ -23,7 +26,26 @@ public class MutantController {
 
     private final MutantService mutantService;
 
-    @Operation(summary = "Verify if a DNA sequence belongs to a mutant")
+    @Operation(summary = "Verify if a DNA sequence belongs to a mutant",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = DnaRequest.class),
+                            examples = @ExampleObject(
+                                    value = "{\n" +
+                                            "  \"dna\": [\n" +
+                                            "    \"ATGCGA\",\n" +
+                                            "    \"CAGTGC\",\n" +
+                                            "    \"TTATGT\",\n" +
+                                            "    \"AGAAAG\",\n" +
+                                            "    \"CCCCTA\",\n" +
+                                            "    \"TCACTG\"\n" +
+                                            "  ]\n" +
+                                            "}"
+                            )
+                    )
+            )
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The DNA sequence belongs to a mutant"),
             @ApiResponse(responseCode = "403", description = "The DNA sequence belongs to a human"),
