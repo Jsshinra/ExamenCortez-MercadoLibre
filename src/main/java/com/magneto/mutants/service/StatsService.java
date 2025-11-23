@@ -2,20 +2,28 @@ package com.magneto.mutants.service;
 
 import com.magneto.mutants.dto.StatsResponse;
 import com.magneto.mutants.repository.DnaRecordRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@RequiredArgsConstructor
 public class StatsService {
-    private final DnaRecordRepository repository;
 
-    public StatsService(DnaRecordRepository repository) {
-        this.repository = repository;
-    }
+    private final DnaRecordRepository dnaRecordRepository;
 
-    public StatsResponse obtenerEstadisticas() {
-        long mutantes = repository.countByMutanteTrue();
-        long humanos = repository.countByMutanteFalse();
-        double ratio = humanos == 0 ? 0.0 : ((double) mutantes) / humanos;
-        return new StatsResponse(mutantes, humanos, ratio);
+    @Transactional(readOnly = true)
+    public StatsResponse getStats() {
+        long mutantCount = dnaRecordRepository.countByIsMutant(true);
+        long humanCount = dnaRecordRepository.countByIsMutant(false);
+
+        double ratio = 0.0;
+        if (humanCount > 0) {
+            ratio = (double) mutantCount / humanCount;
+        } else if (mutantCount > 0) {
+            ratio = mutantCount; // As per README, if human count is 0, ratio is mutant count.
+        }
+
+        return new StatsResponse(mutantCount, humanCount, ratio);
     }
 }

@@ -1,19 +1,19 @@
 package com.magneto.mutants.config;
 
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.Info;
-
 @Configuration
 public class SwaggerConfig {
+
     @Bean
-    public OpenAPI openApiPersonalizado() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("Mutant Detector API")
-                        .version("v1")
-                        .description("API para detección de mutantes y estadísticas"));
+                        .version("1.0")
+                        .description("API for detecting mutants based on their DNA sequence."));
     }
 }

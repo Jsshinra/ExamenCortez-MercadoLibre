@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.magneto.mutants.service.StatsServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-11-23T07:01:02" hostname="SHINRA" time="0.011">
+  <properties/>
+  <testcase name="should return ratio of 0 when no mutants" classname="com.magneto.mutants.service.StatsServiceTest" time="0.006"/>
+  <testcase name="should return correct stats and ratio" classname="com.magneto.mutants.service.StatsServiceTest" time="0.002"/>
+  <testcase name="should return ratio of 0 when no records exist" classname="com.magneto.mutants.service.StatsServiceTest" time="0.002"/>
+  <testcase name="should return ratio equal to mutant count when no humans" classname="com.magneto.mutants.service.StatsServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

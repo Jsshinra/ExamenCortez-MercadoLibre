@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.magneto.mutants.service.MutantDetectorTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2025-11-23T07:01:02" hostname="SHINRA" time="0.007">
+  <properties/>
+  <testcase name="should return false for human with only one sequence" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.002"/>
+  <testcase name="should return false for human with no sequences" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return false for invalid DNA (too small)" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return false for invalid DNA (null)" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return true for mutant with diagonal sequences" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.001"/>
+  <testcase name="should return true for mutant with two vertical sequences" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return true for mutant with multiple horizontal sequences" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return true for mutant with horizontal and diagonal sequences" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <testcase name="should return false for invalid DNA (not square)" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.001"/>
+  <testcase name="should return true for a 4x4 all-A matrix" classname="com.magneto.mutants.service.MutantDetectorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

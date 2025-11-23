@@ -1,49 +1,57 @@
 package com.magneto.mutants.service;
 
 import com.magneto.mutants.entity.DnaRecord;
+import com.magneto.mutants.exception.DnaHashCalculationException;
 import com.magneto.mutants.repository.DnaRecordRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HexFormat;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MutantService {
-    private final MutantDetector detectorMutante;
-    private final DnaRecordRepository repositorio;
 
-    public MutantService(MutantDetector detectorMutante, DnaRecordRepository repositorio) {
-        this.detectorMutante = detectorMutante;
-        this.repositorio = repositorio;
-    }
+    private final DnaRecordRepository dnaRecordRepository;
+    private final MutantDetector mutantDetector;
 
     @Transactional
-    public boolean analizarYGuardar(String[] adn) {
-        String hash = calcularHashAdn(adn);
-        return repositorio.findByHashAdn(hash)
-                .map(DnaRecord::esMutante)
-                .orElseGet(() -> {
-                    boolean mutante = detectorMutante.esMutante(adn);
-                    repositorio.save(new DnaRecord(hash, mutante));
-                    return mutante;
-                });
+    public boolean isMutant(String[] dna) {
+        String dnaHash = calculateDnaHash(dna);
+
+        Optional<DnaRecord> existingRecord = dnaRecordRepository.findByDnaHash(dnaHash);
+        if (existingRecord.isPresent()) {
+            return existingRecord.get().isMutant();
+        }
+
+        boolean isMutant = mutantDetector.isMutant(dna);
+
+        DnaRecord newRecord = new DnaRecord(dnaHash, isMutant);
+        dnaRecordRepository.save(newRecord);
+
+        return isMutant;
     }
 
-    private String calcularHashAdn(String[] adn) {
+    private String calculateDnaHash(String[] dna) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            for (String fila : adn) {
-                String normalizada = fila == null ? "" : fila.trim().toUpperCase();
-                digest.update(normalizada.getBytes(StandardCharsets.UTF_8));
-                digest.update((byte) '\n');
+            String dnaString = String.join("", dna);
+            byte[] hash = digest.digest(dnaString.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
             }
-            byte[] hash = digest.digest();
-            return HexFormat.of().formatHex(hash);
+            return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalStateException("SHA-256 not available", e);
+            throw new DnaHashCalculationException("Error calculating SHA-256 hash", e);
         }
     }
 }

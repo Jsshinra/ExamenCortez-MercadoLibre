@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.magneto.mutants.service.MutantServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2025-11-23T07:01:02" hostname="SHINRA" time="0.414">
+  <properties/>
+  <testcase name="should return true when DNA is mutant and not in cache" classname="com.magneto.mutants.service.MutantServiceTest" time="0.398"/>
+  <testcase name="should return false when DNA is human and not in cache" classname="com.magneto.mutants.service.MutantServiceTest" time="0.005"/>
+  <testcase name="should return false from cache when DNA is human" classname="com.magneto.mutants.service.MutantServiceTest" time="0.003"/>
+  <testcase name="should return true from cache when DNA is mutant" classname="com.magneto.mutants.service.MutantServiceTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

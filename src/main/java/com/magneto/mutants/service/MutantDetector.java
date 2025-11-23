@@ -1,44 +1,87 @@
 package com.magneto.mutants.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class MutantDetector {
 
-    public boolean esMutante(String[] adn) {
-        char[][] matriz = aMatriz(adn);
-        int n = matriz.length;
-        int encontradas = 0;
+    private static final int SEQUENCE_LENGTH = 4;
+    private static final int MIN_SEQUENCES_FOR_MUTANT = 2;
 
+    public boolean isMutant(String[] dna) {
+        if (dna == null || dna.length < SEQUENCE_LENGTH) {
+            return false;
+        }
+
+        final int n = dna.length;
+        final char[][] matrix = new char[n][];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                char base = matriz[i][j];
-                if (j + 3 < n && base == matriz[i][j + 1] && base == matriz[i][j + 2] && base == matriz[i][j + 3]) {
-                    if (++encontradas > 1) return true;
+            if (dna[i] == null || dna[i].length() != n) return false;
+            matrix[i] = dna[i].toCharArray();
+        }
+
+        int sequenceCount = 0;
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                
+                if (col <= n - SEQUENCE_LENGTH) {
+                    if (checkHorizontal(matrix, row, col)) {
+                        sequenceCount++;
+                        if (sequenceCount >= MIN_SEQUENCES_FOR_MUTANT) return true;
+                    }
                 }
-                if (i + 3 < n && base == matriz[i + 1][j] && base == matriz[i + 2][j] && base == matriz[i + 3][j]) {
-                    if (++encontradas > 1) return true;
+                
+                if (row <= n - SEQUENCE_LENGTH) {
+                    if (checkVertical(matrix, row, col)) {
+                        sequenceCount++;
+                        if (sequenceCount >= MIN_SEQUENCES_FOR_MUTANT) return true;
+                    }
                 }
-                if (i + 3 < n && j + 3 < n && base == matriz[i + 1][j + 1] && base == matriz[i + 2][j + 2] && base == matriz[i + 3][j + 3]) {
-                    if (++encontradas > 1) return true;
+                
+                if (row <= n - SEQUENCE_LENGTH && col <= n - SEQUENCE_LENGTH) {
+                    if (checkDiagonalDescending(matrix, row, col)) {
+                        sequenceCount++;
+                        if (sequenceCount >= MIN_SEQUENCES_FOR_MUTANT) return true;
+                    }
                 }
-                if (i + 3 < n && j - 3 >= 0 && base == matriz[i + 1][j - 1] && base == matriz[i + 2][j - 2] && base == matriz[i + 3][j - 3]) {
-                    if (++encontradas > 1) return true;
+                
+                if (row >= SEQUENCE_LENGTH - 1 && col <= n - SEQUENCE_LENGTH) {
+                     if (checkDiagonalAscending(matrix, row, col)) {
+                        sequenceCount++;
+                        if (sequenceCount >= MIN_SEQUENCES_FOR_MUTANT) return true;
+                    }
                 }
             }
         }
         return false;
     }
 
-    private char[][] aMatriz(String[] adn) {
-        int n = adn.length;
-        char[][] matriz = new char[n][n];
-        for (int i = 0; i < n; i++) {
-            String fila = adn[i].trim().toUpperCase();
-            for (int j = 0; j < n; j++) {
-                matriz[i][j] = fila.charAt(j);
-            }
-        }
-        return matriz;
+    private boolean checkHorizontal(char[][] matrix, int row, int col) {
+        final char base = matrix[row][col];
+        return matrix[row][col + 1] == base &&
+               matrix[row][col + 2] == base &&
+               matrix[row][col + 3] == base;
+    }
+
+    private boolean checkVertical(char[][] matrix, int row, int col) {
+        final char base = matrix[row][col];
+        return matrix[row + 1][col] == base &&
+               matrix[row + 2][col] == base &&
+               matrix[row + 3][col] == base;
+    }
+
+    private boolean checkDiagonalDescending(char[][] matrix, int row, int col) {
+        final char base = matrix[row][col];
+        return matrix[row + 1][col + 1] == base &&
+               matrix[row + 2][col + 2] == base &&
+               matrix[row + 3][col + 3] == base;
+    }
+
+    private boolean checkDiagonalAscending(char[][] matrix, int row, int col) {
+        final char base = matrix[row][col];
+        return matrix[row - 1][col + 1] == base &&
+               matrix[row - 2][col + 2] == base &&
+               matrix[row - 3][col + 3] == base;
     }
 }

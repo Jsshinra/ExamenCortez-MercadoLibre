@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StatsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">mutant-detector</a> &gt; <a href="index.source.html" class="el_package">com.magneto.mutants.service</a> &gt; <span class="el_source">StatsService.java</span></div><h1>StatsService.java</h1><pre class="source lang-java linenums">package com.magneto.mutants.service;
+
+import com.magneto.mutants.dto.StatsResponse;
+import com.magneto.mutants.repository.DnaRecordRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+<span class="fc" id="L10">@RequiredArgsConstructor</span>
+public class StatsService {
+
+    private final DnaRecordRepository dnaRecordRepository;
+
+    @Transactional(readOnly = true)
+    public StatsResponse getStats() {
+<span class="fc" id="L17">        long mutantCount = dnaRecordRepository.countByIsMutant(true);</span>
+<span class="fc" id="L18">        long humanCount = dnaRecordRepository.countByIsMutant(false);</span>
+
+<span class="fc" id="L20">        double ratio = 0.0;</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (humanCount &gt; 0) {</span>
+<span class="fc" id="L22">            ratio = (double) mutantCount / humanCount;</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        } else if (mutantCount &gt; 0) {</span>
+<span class="fc" id="L24">            ratio = mutantCount; // As per README, if human count is 0, ratio is mutant count.</span>
+        }
+
+<span class="fc" id="L27">        return new StatsResponse(mutantCount, humanCount, ratio);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.9.202303310957</span></div></body></html>
