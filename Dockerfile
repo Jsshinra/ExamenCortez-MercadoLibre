@@ -5,7 +5,7 @@ COPY --chown=gradle:gradle . .
 RUN gradle build --no-daemon
 
 # Stage 2: Create the runtime image
-FROM openjdk:21-alpine
+FROM eclipse-temurin:21-jdk-alpine
 WORKDIR /app
 COPY --from=build /home/gradle/src/build/libs/mutant-detector-0.0.1-SNAPSHOT.jar ./app.jar
 EXPOSE 8080
